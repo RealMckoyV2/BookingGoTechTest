@@ -2,69 +2,45 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./styles.css";
 
-export const SearchListItem = (props) => {
+export class SearchListItem extends React.Component {
+    placeTypes = {
+        A: "Airport",
+        C: "City",
+        D: "District",
+        T: "Station",
+    };
 
-    this.renderAreaInformation = () => {
+    buildAreaInformation = () => {
         let areaInformation = "";
         // if we dont have a city then attempt to show the region.
-        if (!props.location.city) {
-            if (props.location.region) {
-                areaInformation += `${props.location.region}, `;
+        if (!this.props.location.city) {
+            if (this.props.location.region) {
+                areaInformation += `${this.props.location.region}, `;
             }
         } else { // we must have a city so show that and not the region.
-            areaInformation += `${props.location.city}, `;
+            areaInformation += `${this.props.location.city}, `;
         }
 
-        if (props.location.country) {
-            areaInformation += `${props.location.country}`;
+        if (this.props.location.country) {
+            areaInformation += `${this.props.location.country}`;
         }
 
+        return areaInformation
+    }
+
+    render() {
         return (
-            <span>{areaInformation}</span>
-        )
-    }
-
-    this.getPlaceType = (type) => {
-        console.log(type);
-        let result;
-        switch (type) {
-            case "A":
-                result = "Airport";
-                break;
-            case "C":
-                result = "City";
-                break;
-            case "D":
-                result = "District";
-                break;
-            case "T":
-                result = "Station";
-                break;
-            default:
-                result = "";
-                break;
-        }
-
-        console.log(result);
-        return result;
-    }
-
-    return (
-        <li className="locationItem">
-            <div className="pillContainer">
-                <span>{this.getPlaceType(props.location.placeType)}</span>
-            </div>
-            <div className="locationContainer">
+            // Looks ugly but AC says to apply no styling
+            <li className="locationItem">
                 <div>
-                    <span>{props.location.name}</span>
-                    {props.location.iata && ` (${props.location.iata})`}
+                    <span>{this.placeTypes[this.props.location.placeType]} </span>
+                    <span>{this.props.location.name} {this.props.location.iata && `(${this.props.location.iata})`} </span>
+                    <span>{this.buildAreaInformation()}</span>
+                    {this.buildAreaInformation()}
                 </div>
-                <div>
-                    {this.renderAreaInformation()}
-                </div>
-            </div>
-        </li>
-    );
+            </li>
+        );
+    }
 }
 
 SearchListItem.propTypes = {
@@ -74,6 +50,7 @@ SearchListItem.propTypes = {
         city: PropTypes.string,
         country: PropTypes.string,
         placeType: PropTypes.string,
+        region: PropTypes.string,
     })
 }
 

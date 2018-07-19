@@ -3,22 +3,24 @@ import PropTypes from "prop-types";
 import "./styles.css";
 import { SearchListItem } from "../SearchListItem/SearchListItem";
 
-export const SearchResults = (props) => {
-    this.renderLocations = () => (
-        props.locations.map((location) => {
+export class SearchResults extends React.Component {
+    renderLocations = () => (
+        this.props.locations.map((location, index) => {
             return (
-                <SearchListItem location={location} />
+                <SearchListItem key={index} location={location} />
             );
         })
     )
 
-    return (
-        <div className="searchResultscontainer">
-            <ol className="locationList">
-                {this.renderLocations()}
-            </ol>
-        </div>
-    );
+    render() {
+        return (
+            <div className="searchResultscontainer">
+                <ol className="locationList">
+                    {this.renderLocations()}
+                </ol>
+            </div>
+        );
+    }
 }
 
 SearchResults.propTypes = {
